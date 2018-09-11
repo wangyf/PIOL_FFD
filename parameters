@@ -35,7 +35,7 @@ dphi = 10.
 #otheta = 10
 #ophi = -130.
 
-comp = 0
+comp = 1 #0 only output amplitude 1 output all components
 endian = 0  # read big-endian data on little-endian machine
 usrorig = 1 # 0-> origin is at origin in SORD coordinate
             # 1-> origin on free surface but horizontal coordinate is adjusted to center of fault
