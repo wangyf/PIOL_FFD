@@ -39,7 +39,7 @@ end do
 ! Read key val pair
 if ( str == '' ) cycle doline
 read( str, *, iostat=ios ) key
-write(0,*) str
+
 ! Select input key
 select case( key )
 case( 'fieldio', '' )
@@ -81,7 +81,7 @@ case( 't2s' );    read( str, *, iostat=ios ) key,op, t2s  !sP
 case( 't2e' );    read( str, *, iostat=ios ) key,op, t2e  !sP
 case( 't3s' );    read( str, *, iostat=ios ) key,op, t3s  !S
 case( 't3e' );    read( str, *, iostat=ios ) key,op, t3e  !S
-case( 'comp' );    read( str, *, iostat=ios ) key,op, comp  !0 is amplitude 1 is all components
+case( 'comp' );    read( str, *, iostat=ios ) key,op, comp  !0 is only amplitude 1 is all components
 case( 'usrorig' );    read( str, *, iostat=ios ) key,op, usrorig  !use average fault as origin (not default)
 case( 'endian' );    read( str, *, iostat=ios ) key,op, endian !1 is big-endian input 0 is little-endian
 case( 'nsourceoffset' )
