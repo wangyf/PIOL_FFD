@@ -22,9 +22,28 @@ nrec = nphi*ntheta
 
 if(master) write(0,*) 'nrec= ',nrec
 if (nt0>1 .and. t0s > 0 .and. master) write(0,*) 'P wave nt0 = ',nt0
-if (nt1>1 .and. t1s > 0 .and. master) write(0,*) 'pP wave nt0 = ',nt1
-if (nt2>1 .and. t2s > 0 .and. master) write(0,*) 'sP wave nt0 = ',nt2
-if (nt3>1 .and. t3s > 0 .and. master) write(0,*) 'S wave nt0 = ',nt3
+if (nt1>1 .and. t1s > 0 .and. master) write(0,*) 'pP wave nt1 = ',nt1
+if (nt2>1 .and. t2s > 0 .and. master) write(0,*) 'sP wave nt2 = ',nt2
+if (nt3>1 .and. t3s > 0 .and. master) write(0,*) 'S wave nt3 = ',nt3
+
+if (master) then
+    if (nt0>1 .and. t0s > 0) then
+        write(0,*) 'P wave starts at ',t0s, ' s'
+        write(0,*) 'P wave ends at ',t0e, ' s'
+    end if
+    if (nt1>1 .and. t1s > 0) then
+        write(0,*) 'pP wave starts at ',t1s, ' s'
+        write(0,*) 'pP wave ends at ',t1e, ' s'
+    end if
+    if (nt2>1 .and. t2s > 0) then
+        write(0,*) 'sP wave starts at ',t2s, ' s'
+        write(0,*) 'sP wave ends at ',t2e, ' s'
+    end if
+    if (nt3>1 .and. t3s > 0) then
+        write(0,*) 'S wave starts at ',t3s, ' s'
+        write(0,*) 'S wave ends at ',t3e, ' s'
+    end if
+end if
 
 bigendian = endian > 0
 if (master .and. bigendian) write(0,'(A)') 'Endianness of Input data is different with this machine'

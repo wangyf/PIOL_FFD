@@ -12,7 +12,7 @@ all: PIOL-FFD
 
 PIOL-FFD: $(OBJS)
 	$(FC) $(FLAGS) $^ -o $@ 
-	cp $@ ../
+	#cp $@ ../
 
 # independent
 util.o:         util.f90

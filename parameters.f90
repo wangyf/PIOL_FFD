@@ -153,8 +153,6 @@ write(0,*) 'np3 = ',np3
 write(0,*) 'Src nt = ',nt
 write(0,*) 'Sample it range: ',its,ite,ditse
 write(0,*) 'dt = ',dt
-write(0,*) 'P wave starts at ',t0s, ' s'
-write(0,*) 'P wave ends at ',t0e, ' s'
 end if
 
 end subroutine

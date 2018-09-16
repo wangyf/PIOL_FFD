@@ -155,6 +155,8 @@ do m = 1, nsourceoffset
           stop
       end if
       !$omp critical
+      !nit1 = nint(time/dt)+1
+      !P(nit1,k,1:3) = P(nit1,k,1:3) + tmpam(1:3)
       P(nit1,k,1:3) = P(nit1,k,1:3) + tmpam(1:3) * wei1
       P(nit2,k,1:3) = P(nit2,k,1:3) + tmpam(1:3) * wei2
       !$omp end critical
@@ -200,9 +202,12 @@ do m = 1, nsourceoffset
           stop
       end if
       !$omp critical
+      !nit1 = nint(time/dt)+1
+      !SV(nit1,k,1:3) = SV(nit1,k,1:3) + tmpam1(1:3)
       SV(nit1,k,1:3) = SV(nit1,k,1:3) + tmpam1(1:3) * wei1
       SV(nit2,k,1:3) = SV(nit2,k,1:3) + tmpam1(1:3) * wei2
       
+      !SH(nit1,k,1:3) = SH(nit1,k,1:3) + tmpam2(1:3)
       SH(nit1,k,1:3) = SH(nit1,k,1:3) + tmpam2(1:3) * wei1
       SH(nit2,k,1:3) = SH(nit2,k,1:3) + tmpam2(1:3) * wei2
       
@@ -249,6 +254,7 @@ do m = 1, nsourceoffset
           stop
       end if
       !$omp critical
+      !PP(nit1,k,1:3) = PP(nit1,k,1:3) + tmpam(1:3)
       PP(nit1,k,1:3) = PP(nit1,k,1:3) + tmpam(1:3) * wei1
       PP(nit2,k,1:3) = PP(nit2,k,1:3) + tmpam(1:3) * wei2
       !$omp end critical
@@ -290,6 +296,7 @@ do m = 1, nsourceoffset
           stop
       end if
       !$omp critical
+      !SP(nit1,k,1:3) = SP(nit1,k,1:3) + tmpam(1:3)
       SP(nit1,k,1:3) = SP(nit1,k,1:3) + tmpam(1:3) * wei1
       SP(nit2,k,1:3) = SP(nit2,k,1:3) + tmpam(1:3) * wei2
       !$omp end critical
