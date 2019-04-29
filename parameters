@@ -27,38 +27,62 @@ vs = 3464. #m/s
 #receiver 
 t0s = 160. #sec       #P wave compuatation window (t0s-t0e). Finally this code generates a p wave (t0s-t0e)
 t0e = 220.
-t1s = 0.              #pP wave compuatation window (t0s-t0e). Finally this code generates a pP wave (t0s-t0e)
+t1s = 0.              #pP wave compuatation window (t1s-t1e). Finally this code generates a pP wave (t1s-t1e)
 t1e = 0.
-t2s = 0.
+t2s = 0.              #sP wave compuatation window (t2s-t2e). Finally this code generates a sP wave (t2s-t2e)
 t2e = 0.
-t3s = 280.
+t3s = 280.            #S wave compuatation window (t3s-t3e). Finally this code generates a pP wave (t3s-t3e)
 t3e = 340.
-dtheta = 90.
-dphi = 360.
+dtheta = 90.          #take-off angle interval
+dphi = 360.           #azimuthal angle interval
 # otheta and ophi are optional (must after dtheta and dphi)
-otheta = 60
-ophi = 160.
+otheta = 60           #initial take-off angle
+ophi = 160.           #initial azimuthal angle
 
-comp = 1
+comp = 1              #output option 0: output amplitude 1:each component (x,y,z)
 endian = 0  # read big-endian data on little-endian machine
 usrorig = 2 # 0-> origin is at origin in SORD coordinate
             # 1-> origin on free surface but horizontal coordinate is adjusted to center of fault
             # 2-> origin is average to fault  
 nsourceoffset = 1
-sourceoffset = (0,0,0,0)
-#sourceoffset =  (xoffset,yoffset,zoffset,toffset) # move source but keep receiver fixed  
+sourceoffset = (0,0,0,0) #sourceoffset =  (xoffset,yoffset,zoffset,toffset) # move source but keep receiver fixed  
+
 #**********************************************************
+# we have to input 1) fault coordinate along x, y and z (3 files)
+#                  2) moment rate tensor 
+# IO example
+#  1)                                                     2)        3)           4)           5)          6)      7)            8)
+#('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'fx', 1.0, ['faultx']),
+
+#Interpretation of this command:
+# 1)   Input or output. In this code, we only have parallel structured input for fault. Keep =r
+# 2)   IO steps. Recommend 1 for static field (fault geometry) 10~50 for time-variable fields (moment rate)
+# 3)   Subfault node number along x for input moment rate tensor (start, end, stride)
+# 4)   Subfault node number along y for input moment rate tensor (start, end, stride)
+# 5)   Subfault node number along z for input moment rate tensor (start, end, stride)
+# 6)   Time step for input moment rate tensor (start, end, stride) static: (0,0,1)
+# 7)   File name user customized. It should be in the input folder you assigned
+# 8)   Field name. It has to be:       faultx  -> x coordinate of fault (nn(1) * nn(2) * 1)
+#                                      faulty  -> y coordinate of fault (nn(1) * nn(2) * 1)
+#                                      faultz  -> z coordinate of fault (nn(1) * nn(2) * 1)
+#                                      mr11    -> \dot{M_{11}} (nn(1) * nn(2) * 1 * nt)
+#                                      mr22    -> \dot{M_{22}} (nn(1) * nn(2) * 1 * nt)
+#                                      mr33    -> \dot{M_{33}} (nn(1) * nn(2) * 1 * nt)
+#                                      mr31    -> \dot{M_{31}} (nn(1) * nn(2) * 1 * nt)
+#                                      mr12    -> \dot{M_{12}} (nn(1) * nn(2) * 1 * nt)
+#                                      mr23    -> \dot{M_{23}} (nn(1) * nn(2) * 1 * nt)
 
 fieldio = [
 # define a constant field
 #('=', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1, [(1, 41, 1), (1, 41, 1), (1, 2, 1), (0, 0, 1)], '-', 2670.0, ['rho']),
 # read or write a file name
-('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'faultx', 1.0, ['faultx']),
-('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'faulty', 1.0, ['faulty']),
-('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'faultz', 1.0, ['faultz']),
-('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 10, [(1, 113, 1), (1, 113, 1), (1, 1, 1), (1, 1501, 1)], 'mr31', 1.0, ['mr31']),
+('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'fx', 1.0, ['faultx']),
+('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'fy', 1.0, ['faulty']),
+('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 1,  [(1, 113, 1), (1, 113, 1), (1, 1, 1), (0, 0, 1)], 'fz', 1.0, ['faultz']),
+('=r', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 10, [(1, 113, 1), (1, 113, 1), (1, 1, 1), (1, 1501, 1)], 'momentrate31', 1.0, ['mr31']),
 #('=w', 1, 'const', 1.0, (0.0, 0.0, 0.0), (0.0, 0.0, 0.0), 10, [(1, 161, 1), (1, 1, 1), (1, 2, 1), (1, 801, 1)], 'tinti', 1.0, ['tinti']),
 # note:
+# '=r'->read file named
 # 1. static field (it == 0)
 #         ii(:,4) = (0,0,1)
 #    static field (it == nt)
