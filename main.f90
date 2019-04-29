@@ -116,7 +116,7 @@ if (nt3 > 1 .and. t3s > 0.) then
   if (master) write(0,*)
   call traveltime('S','allmin')
   if(trvmin < t3s .and. master) then
-  	write(0,*) 'S: t2s < ',trvmin
+  	write(0,*) 'S: t3s < ',trvmin
   	stop
   end if
   call traveltime('S','allmax')

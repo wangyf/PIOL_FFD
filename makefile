@@ -2,7 +2,7 @@
 # Compiler and Flags
 FC = mpif90
 #FC = ftn 
-FLAGS = -O3 -ffast-math -funroll-loops -Wall -Wtabs
+FLAGS = -O3 -ffast-math -funroll-loops
 
 # user customized source subroutine in first line
 OBJS = stringmod.o globals.o util.o radiations.o\
@@ -27,13 +27,13 @@ globals.o:      globals.f90
 
 #********** user customized ***********
 stringmod.o: stringmod.f90
-	$(FC) $(FFLAGS) -c $^
+	$(FC) $(FLAGS) -c $^
 	
 radiations.o: radiations.f90
-	$(FC) $(FFLAGS) -c $^
+	$(FC) $(FLAGS) -c $^
 
 assemble.o: assemble.f90
-	$(FC) $(FFLAGS) -c $^
+	$(FC) $(FLAGS) -c $^
 #**************************************
 
 # dependent on m_frio

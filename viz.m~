@@ -1,8 +1,0 @@
-
-
-clear all
-close all
-
-fid = fopen('in/sv1','r');
-data = fread(fid,'single');
-sv = reshape

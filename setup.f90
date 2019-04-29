@@ -52,8 +52,6 @@ if (master .and. bigendian) write(0,'(A)') 'Endianness of Input data is differen
 
 
 
-nt = max( nt, 0 )
-
 ! Partition for parallelization
 if ( np0 == 1 ) np3 = 1
 nl3 = (nn - 1) / np3 + 1
