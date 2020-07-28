@@ -2,7 +2,11 @@
 # Compiler and Flags
 FC = mpif90
 #FC = ftn 
-FLAGS = -O3 -ffast-math -funroll-loops
+# GNU
+FLAGS = -O3 -ffast-math -funroll-loops -cpp -fdefault-real-8 -Ddoubleprecision
+
+#Intel
+#FLAGS = -O3 -fpp -Ddoubleprecision=1 -real-size 64
 
 # user customized source subroutine in first line
 OBJS = stringmod.o globals.o util.o radiations.o\

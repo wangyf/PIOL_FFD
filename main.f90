@@ -52,6 +52,7 @@ if (debug > 1) write(0,*) ip3,nm
 ! Initial Values
 
 ! read in fault coordinate
+  if (master) write(0, '(A)') 'Start reading source'
   call readin_cor
   call receiver
 
@@ -267,21 +268,35 @@ use m_util
 implicit none
 
 integer :: i,j,k
-real :: iphi, itheta
+real :: iphi, itheta,phi,ng_r,i_r,theta,sphi,cphi
 
-k = 0
-do j = 1, ntheta
-  do i = 1, nphi !theta is 0->pi/2; phi = -pi->pi
-     k = k + 1
-     itheta = otheta + dtheta * (j - 1)
-     iphi =  ophi + dphi * (i - 1) ! phi and theta have an offset to avoid nodal plane
-     rx(k) = x0 + radius * cos(itheta*deg2rad) * cos(iphi*deg2rad) !sin (degree)
-     ry(k) = y0 + radius * cos(itheta*deg2rad) * sin(iphi*deg2rad)
-     rz(k) = z0 + radius * sin(itheta*deg2rad)
-     ! azimuthal angle is pi/2 - iphi
-     ! take-off angle is pi/2 - itheta
+if (lattice == 'lon-lat') then
+    k = 0
+    do j = 1, ntheta
+      do i = 1, nphi !theta is 0->pi/2; phi = -pi->pi
+         k = k + 1
+         itheta = otheta + dtheta * (j - 1)
+         iphi =  ophi + dphi * (i - 1) ! phi and theta have an offset to avoid nodal plane
+         rx(k) = x0 + radius * cos(itheta*deg2rad) * cos(iphi*deg2rad) !sin (degree)
+         ry(k) = y0 + radius * cos(itheta*deg2rad) * sin(iphi*deg2rad)
+         rz(k) = z0 + radius * sin(itheta*deg2rad)
+         ! azimuthal angle is pi/2 - iphi
+         ! take-off angle is pi/2 - itheta
+      end do
+    end do
+else if (lattice == 'Fibonacci') then
+    phi = ( 1.0D+00 + sqrt ( 5.0D+00 ) ) / 2.0D+00
+    ng_r = real( nfibonacci ) 
+    do j = 1, nfibonacci
+    i_r = real ( - ng_r - 1 + 2 * j )
+    theta = 2.0D+00 * pi * i_r / phi
+    sphi = i_r / ng_r
+    cphi = sqrt ( ( ng_r + i_r ) * ( ng_r - i_r ) ) / ng_r
+    rx(j) = x0 + radius * cphi * sin ( theta )
+    ry(j) = y0 + radius * cphi * cos ( theta )
+    rz(j) = z0 + radius * sphi
   end do
-end do
+end if
 end subroutine receiver
 
 !-----------------

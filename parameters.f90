@@ -72,6 +72,7 @@ case( 'dtheta')
     read( str, *, iostat=ios ) key,op, dtheta
     otheta = 0 + dtheta/2 ! default dtheta 
 case( 'otheta');   read( str, *, iostat=ios ) key,op, otheta !offset theta
+case( 'nfibonacci' ); read( str, *, iostat=ios ) key,op, nfibonacci !number of receivers of Fibonacci sprial grids
 case( 'radius');   read( str, *, iostat=ios ) key,op, radius !radius for focal sphere
 case( 't0s' );    read( str, *, iostat=ios ) key,op, t0s  !time window starts for P
 case( 't0e' );    read( str, *, iostat=ios ) key,op, t0e  !time window ends for P
@@ -99,6 +100,9 @@ case( 'infile' ) !folder has '/'
 case( 'oufile' )
    call parse(str, delims, args, nargs) 
    oufile = args(3)
+case( 'lattice' )
+   call parse(str, delims, args, nargs) 
+   lattice = args(3)
 !*************************************************************
 case default
     select case( key(1:1) )

@@ -33,11 +33,15 @@ t2s = 0.              #sP wave compuatation window (t2s-t2e). Finally this code 
 t2e = 0.
 t3s = 280.            #S wave compuatation window (t3s-t3e). Finally this code generates a pP wave (t3s-t3e)
 t3e = 340.
+lattice = 'Fibonacci'  #'lon-lat' or 'Fibonacci'
+# if lattice == 'lon-lat'
 dtheta = 90.          #take-off angle interval
 dphi = 360.           #azimuthal angle interval
 # otheta and ophi are optional (must after dtheta and dphi)
 otheta = 60           #initial take-off angle
 ophi = 160.           #initial azimuthal angle
+# if lattice == 'Fibonacci'
+nfibonacci = 1001
 
 comp = 1              #output option 0: output amplitude 1:each component (x,y,z)
 endian = 0  # read big-endian data on little-endian machine

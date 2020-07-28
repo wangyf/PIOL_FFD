@@ -34,10 +34,11 @@ logical :: &
     verb,           & ! print messages
     bigendian,		& ! indicate big-endian
     master            ! master process flag
-character(2560) :: &
+character(256) :: &
     str,		    & ! string for storing file names
     infile,			& ! input data folder
-    oufile			  ! output data folder
+    oufile,         & ! output data folder
+    lattice           ! method for station on focal sphere (Fibonacci or lat-lon)
 real, allocatable, target, dimension(:,:,:) :: &
     s1, s2		    ! temporary storage  
 real, allocatable, target, dimension(:,:,:,:) :: &
@@ -53,6 +54,7 @@ integer :: & !receivers
 	nrec,&   ! number of total receivers 
 	ntheta,& ! number of receivers along theta
 	nphi,&   ! number of receivers along phi
+    nfibonacci, & !number of receivers for Fibonacci spiral grids
 	comp,&   ! output component (0 is amplitude, 1 is x, 2 is y, 3 is z)
 	endian,& ! endianness (1 is big-endian input; 0 is little-endian input)
 	usrorig,&!# 0-> origin is at origin in SORD coordinate 

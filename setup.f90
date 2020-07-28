@@ -16,9 +16,13 @@ nt1 = nint((t1e-t1s)/dt)+1
 nt2 = nint((t2e-t2s)/dt)+1
 nt3 = nint((t3e-t3s)/dt)+1 ! additional S wave not within P wave package
 
-ntheta = nint(90./dtheta)
-nphi = nint(360./dphi)
-nrec = nphi*ntheta
+if (lattice == 'lon-lat') then
+    ntheta = nint(90./dtheta)
+    nphi = nint(360./dphi)
+    nrec = nphi*ntheta
+else if (lattice == 'Fibonacci') then
+    nrec = nfibonacci
+end if
 
 if(master) write(0,*) 'nrec= ',nrec
 if (nt0>1 .and. t0s > 0 .and. master) write(0,*) 'P wave nt0 = ',nt0

@@ -95,7 +95,11 @@ integer, intent(in) :: coords(3)
 integer :: comm, root, i, e
 i = size(r)
 call commrank( comm, root, coords )
+#ifdef doubleprecision
+call mpi_bcast( r(1), i, mpi_double_precision, root, comm, e )
+#else
 call mpi_bcast( r(1), i, mpi_real, root, comm, e )
+#endif
 end subroutine
 
 ! Broadcast real 4d
@@ -106,7 +110,11 @@ integer, intent(in) :: coords(3)
 integer :: comm, root, i, e
 i = size(r)
 call commrank( comm, root, coords )
+#ifdef doubleprecision
+call mpi_bcast( r(1,1,1,1), i, mpi_double_precision, root, comm, e )
+#else
 call mpi_bcast( r(1,1,1,1), i, mpi_real, root, comm, e )
+#endif
 end subroutine
 
 ! Reduce integer
@@ -149,9 +157,17 @@ end select
 call commrank( comm, root, coords )
 i = 1
 if ( op(1:3) == 'all' ) then
+#ifdef doubleprecision
+    call mpi_allreduce( r, rr, i, mpi_double_precision, iop, comm, e )
+#else
     call mpi_allreduce( r, rr, i, mpi_real, iop, comm, e )
+#endif
 else
+#ifdef doubleprecision
+    call mpi_reduce( r, rr, i, mpi_double_precision, iop, root, comm, e )
+#else
     call mpi_reduce( r, rr, i, mpi_real, iop, root, comm, e )
+#endif
 end if
 end subroutine
 
@@ -173,9 +189,17 @@ end select
 call commrank( comm, root, coords )
 i = size(r)
 if ( op(1:3) == 'all' ) then
+#ifdef doubleprecision
+    call mpi_allreduce( r(1), rr(1), i, mpi_double_precision, iop, comm, e )
+#else
     call mpi_allreduce( r(1), rr(1), i, mpi_real, iop, comm, e )
+#endif
 else
+#ifdef doubleprecision
+    call mpi_reduce( r(1), rr(1), i, mpi_double_precision, iop, root, comm, e )
+#else
     call mpi_reduce( r(1), rr(1), i, mpi_real, iop, root, comm, e )
+#endif
 end if
 end subroutine
 
@@ -197,9 +221,17 @@ end select
 call commrank( comm, root, coords )
 i = size(r)
 if ( op(1:3) == 'all' ) then
+#ifdef doubleprecision
+    call mpi_allreduce( r(1,1), rr(1,1), i, mpi_double_precision, iop, comm, e )
+#else
     call mpi_allreduce( r(1,1), rr(1,1), i, mpi_real, iop, comm, e )
+#endif
 else
+#ifdef doubleprecision
+    call mpi_reduce( r(1,1), rr(1,1), i, mpi_double_precision, iop, root, comm, e )
+#else
     call mpi_reduce( r(1,1), rr(1,1), i, mpi_real, iop, root, comm, e )
+#endif
 end if
 end subroutine
 
@@ -219,8 +251,13 @@ if ( np3(i) > 1 .and. nm(i) > 1 ) then
     isend = 0
     irecv = 0
     isend(i) = nm(i) - 2 * nh(i)
+#ifdef doubleprecision
+    call mpi_type_create_subarray( 3, nm, n, isend, mpi_order_fortran, mpi_double_precision, tsend, e )
+    call mpi_type_create_subarray( 3, nm, n, irecv, mpi_order_fortran, mpi_double_precision, trecv, e )
+#else
     call mpi_type_create_subarray( 3, nm, n, isend, mpi_order_fortran, mpi_real, tsend, e )
     call mpi_type_create_subarray( 3, nm, n, irecv, mpi_order_fortran, mpi_real, trecv, e )
+#endif
     call mpi_type_commit( tsend, e )
     call mpi_type_commit( trecv, e )
     call mpi_sendrecv( f(1,1,1), 1, tsend, next, 0, f(1,1,1), 1, trecv, prev, 0, comm, mpi_status_ignore, e )
@@ -228,8 +265,13 @@ if ( np3(i) > 1 .and. nm(i) > 1 ) then
     call mpi_type_free( trecv, e )
     isend(i) = nh(i)
     irecv(i) = nm(i) - nh(i)
+#ifdef doubleprecision
+    call mpi_type_create_subarray( 3, nm, n, isend, mpi_order_fortran, mpi_double_precision, tsend, e )
+    call mpi_type_create_subarray( 3, nm, n, irecv, mpi_order_fortran, mpi_double_precision, trecv, e )
+#else
     call mpi_type_create_subarray( 3, nm, n, isend, mpi_order_fortran, mpi_real, tsend, e )
     call mpi_type_create_subarray( 3, nm, n, irecv, mpi_order_fortran, mpi_real, trecv, e )
+#endif
     call mpi_type_commit( tsend, e )
     call mpi_type_commit( trecv, e )
     call mpi_sendrecv( f(1,1,1), 1, tsend, prev, 1, f(1,1,1), 1, trecv, next, 1, comm, mpi_status_ignore, e )
@@ -255,8 +297,13 @@ if ( np3(i) > 1 .and. nm(i) > 1 ) then
     isend = 0
     irecv = 0
     isend(i) = nm(i) - 2 * nh(i)
+#ifdef doubleprecision
+    call mpi_type_create_subarray( 4, nm, n, isend, mpi_order_fortran, mpi_double_precision, tsend, e )
+    call mpi_type_create_subarray( 4, nm, n, irecv, mpi_order_fortran, mpi_double_precision, trecv, e )
+#else
     call mpi_type_create_subarray( 4, nm, n, isend, mpi_order_fortran, mpi_real, tsend, e )
     call mpi_type_create_subarray( 4, nm, n, irecv, mpi_order_fortran, mpi_real, trecv, e )
+#endif
     call mpi_type_commit( tsend, e )
     call mpi_type_commit( trecv, e )
     call mpi_sendrecv( f(1,1,1,1), 1, tsend, next, 0, f(1,1,1,1), 1, trecv, prev, 0, comm, mpi_status_ignore, e )
@@ -264,8 +311,13 @@ if ( np3(i) > 1 .and. nm(i) > 1 ) then
     call mpi_type_free( trecv, e )
     isend(i) = nh(i)
     irecv(i) = nm(i) - nh(i)
+#ifdef doubleprecision
+    call mpi_type_create_subarray( 4, nm, n, isend, mpi_order_fortran, mpi_double_precision, tsend, e )
+    call mpi_type_create_subarray( 4, nm, n, irecv, mpi_order_fortran, mpi_double_precision, trecv, e )
+#else
     call mpi_type_create_subarray( 4, nm, n, isend, mpi_order_fortran, mpi_real, tsend, e )
     call mpi_type_create_subarray( 4, nm, n, irecv, mpi_order_fortran, mpi_real, trecv, e )
+#endif
     call mpi_type_commit( tsend, e )
     call mpi_type_commit( trecv, e )
     call mpi_sendrecv( f(1,1,1,1), 1, tsend, prev, 1, f(1,1,1,1), 1, trecv, next, 1, comm, mpi_status_ignore, e )
@@ -288,8 +340,6 @@ integer, intent(in) :: mpio
 logical, intent(in) :: verb
 integer :: i, e
 integer(kind=mpi_offset_kind) :: offset
-
-if (verb) write(0,*) 'Read/Write file:', filename
 i = size( oo )
 if ( mpio == 0 ) then
     if ( any( nn <= 0 ) ) return
@@ -305,15 +355,31 @@ offset = offset * size( f, 1 )
 i = size( f )
 if ( mode == 'r' ) then
     if ( mpio > 0 ) then
+#ifdef doubleprecision
+        call mpi_file_read_at_all( fh, offset, f(1,1), i, mpi_double_precision, mpi_status_ignore, e )
+#else
         call mpi_file_read_at_all( fh, offset, f(1,1), i, mpi_real, mpi_status_ignore, e )
+#endif
     else
+#ifdef doubleprecision
+        call mpi_file_read_at( fh, offset, f(1,1), i, mpi_double_precision, mpi_status_ignore, e )
+#else
         call mpi_file_read_at( fh, offset, f(1,1), i, mpi_real, mpi_status_ignore, e )
+#endif
     end if
 else
     if ( mpio > 0 ) then
+#ifdef doubleprecision
+        call mpi_file_write_at_all( fh, offset, f(1,1), i, mpi_double_precision, mpi_status_ignore, e )
+#else
         call mpi_file_write_at_all( fh, offset, f(1,1), i, mpi_real, mpi_status_ignore, e )
+#endif
     else
+#ifdef doubleprecision
+        call mpi_file_write_at( fh, offset, f(1,1), i, mpi_double_precision, mpi_status_ignore, e )
+#else
         call mpi_file_write_at( fh, offset, f(1,1), i, mpi_real, mpi_status_ignore, e )
+#endif
     end if
 end if
 i = size( oo )
@@ -382,15 +448,28 @@ call mpi_comm_rank( comm, i, e  )
 call mpi_comm_rank( mpi_comm_world, ip, e  )
 if ( verb .and. i == 0 ) write( 0, '(i8,a,i2,a,i8,2a)' ) &
     ip, ' Opened', ndims, 'D', n, 'P file: ', trim( filename )
+#ifdef doubleprecision
+ftype = mpi_double_precision
+#else
 ftype = mpi_real
+#endif
 if ( ndims > 0 ) then
     mmm = pack( mm, mm > 1, mm )
     nnn = pack( nn, mm > 1, nn )
     ooo = pack( oo, mm > 1, oo )
+#ifdef doubleprecision
+    call mpi_type_create_subarray( ndims, mmm, nnn, ooo, mpi_order_fortran, &
+                                   mpi_double_precision, ftype, e )
+#else
     call mpi_type_create_subarray( ndims, mmm, nnn, ooo, mpi_order_fortran, mpi_real, ftype, e )
+#endif
     call mpi_type_commit( ftype, e )
 end if
+#ifdef doubleprecision
+call mpi_file_set_view( fh, offset, mpi_double_precision, ftype, 'native', mpi_info_null, e )
+#else
 call mpi_file_set_view( fh, offset, mpi_real, ftype, 'native', mpi_info_null, e )
+#endif
 end subroutine
 
 end module

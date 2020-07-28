@@ -296,11 +296,11 @@ end function
 	END DO
 	END SUBROUTINE
 	
-      SUBROUTINE SWAP_F4 (FLOAT4)
+SUBROUTINE SWAP_F4 (FLOAT4)
 
       IMPLICIT NONE
 
-      REAL(KIND=4), INTENT(IN OUT) :: FLOAT4
+      REAL, INTENT(IN OUT) :: FLOAT4
 
       INTEGER(KIND=1), DIMENSION(4) :: BYTE_ARR, BYTE_ARR_TMP
       INTEGER :: I
@@ -318,7 +318,7 @@ end function
 
       RETURN
 
-      END SUBROUTINE SWAP_F4
+END SUBROUTINE SWAP_F4
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
