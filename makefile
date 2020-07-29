@@ -3,7 +3,7 @@
 FC = mpif90
 #FC = ftn 
 # GNU
-FLAGS = -O3 -ffast-math -funroll-loops -cpp -fdefault-real-8 -Ddoubleprecision
+FLAGS = -O3 -ffast-math -funroll-loops -fbounds-check -cpp -fdefault-real-8 -Ddoubleprecision
 
 #Intel
 #FLAGS = -O3 -fpp -Ddoubleprecision=1 -real-size 64
@@ -16,7 +16,7 @@ all: PIOL-FFD
 
 PIOL-FFD: $(OBJS)
 	$(FC) $(FLAGS) $^ -o $@ 
-	#cp $@ ../
+# 	cp $@ /Volumes/My\ Passport/Intraslab/May_2020/simulations_2020July
 
 # independent
 util.o:         util.f90

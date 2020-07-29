@@ -54,9 +54,13 @@ if (debug > 1) write(0,*) ip3,nm
 ! read in fault coordinate
   if (master) write(0, '(A)') 'Start reading source'
   call readin_cor
+
+  if (master) write(0, '(A)') 'Start initializing receivers'
   call receiver
 
+
 ! calculate ray from subfault to receiver
+  if (master) write(0,'(A)') 'Calculate ray from subfault to receiver'
 
 ! based on t!s and t!e to switch which phase will be computed
 duration = dt * (nt-1)
